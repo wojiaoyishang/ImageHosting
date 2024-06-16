@@ -175,27 +175,3 @@ def upload_file(filename, filedata, filetype, optsize=0, expire=0, session=None)
 
     return [soup.find(id="code_direct").attrs['value']]
 
-
-def upload_file_by_filepath(filepath, optsize=0, expire=0, session=None):
-    """
-    从给定的文件路径读取文件，并使用 upload_file 函数上传。
-
-    :param filepath: 完整的文件路径
-    :param optsize: 图片缩放选项，默认为0（不缩放）
-    :param expire: 文件在服务器上的过期天数，默认为0（不过期）
-    :return: 上传后的文件 URL
-    """
-    # 使用文件名作为上传后的名称
-    filename = filepath.split('/')[-1]
-
-    # 尝试确定文件类型
-    filetype, _ = mimetypes.guess_type(filepath)
-    if filetype is None:
-        filetype = 'application/octet-stream'  # 使用通用二进制类型，如果无法猜测类型
-
-    # 读取文件数据
-    with open(filepath, 'rb') as file:
-        filedata = file.read()
-
-    # 调用之前定义的 upload_file 函数
-    return upload_file(filename, filedata, filetype, optsize, expire, session=session)
